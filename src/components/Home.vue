@@ -21,7 +21,7 @@ const loadBook = async () => {
     years.value = new Set(store.years.sort((a, b) => b - a));
     // Get recommended book
     recommendedBook.value =
-      store.getRecommendedBook[getRandomInt(store.recomended.length)];
+      store.getRecommendedBook[getRandomInt(store.getRecommendedBook.length)];
   }
 };
 const deleteBook = async (id) => {

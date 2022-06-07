@@ -39,10 +39,9 @@ export const useStore = defineStore("main", {
           currentYear - book.data.pub_year >= 3 && book.data.rating != null
         );
       });
-      return state.recomended.filter(
-        (recomended) =>
-          recomended.data.rating == state.recomended[0].data.rating
-      );
+      return state.recomended.filter((rec) => {
+        return rec.data.rating === state.recomended[0].data.rating;
+      });
     },
   },
   actions: {},
