@@ -10,7 +10,7 @@ import { useRouter } from "vue-router";
       <h1 class="text-2xl text-white">Book Catalog</h1>
     </router-link>
     <router-link to="/add">
-      <h1 class="text-lg text-white">Add books</h1>
+      <h1 class="text-lg text-white">Add book</h1>
     </router-link>
   </div>
 </template>
