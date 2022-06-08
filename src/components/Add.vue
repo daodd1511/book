@@ -34,7 +34,7 @@ const alert = (msg) => {
 const addBook = async (book) => {
   try {
     if (book.isbn != "" && checkISBN(book.isbn) == false) {
-      throw "Please tpye in valid ISBN";
+      throw "Please type in valid ISBN";
     }
     await add(book);
     window.alert("Book added successfully!");
