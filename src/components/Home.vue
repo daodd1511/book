@@ -9,10 +9,13 @@ const emit = defineEmits(["delete", "closeModal"]);
 const store = useStore();
 let recommendedBook = ref();
 let years = ref();
+let ratings = ref();
+let group_option = ref("year");
 let isOpenModal = ref(false);
 let deleteBookId = ref();
 onBeforeMount(async () => {
   await loadBook();
+  ratings.value = new Set(store.ratings.sort((a, b) => b - a));
 });
 const loadBook = async () => {
   store.$reset();
@@ -37,6 +40,37 @@ const getRandomInt = (max) => Math.floor(Math.random() * max);
 
 <template>
   <div v-if="store.books.length != 0">
+    <!-- Group options -->
+    <div class="flex items-center gap-4">
+      <h2 class="text-lg">Group by:</h2>
+      <div class="mr-4 flex items-center">
+        <input
+          id="years-radio"
+          type="radio"
+          value="year"
+          v-model="group_option"
+          name="inline-radio-group"
+          class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600"
+          checked="checked"
+        />
+        <label for="years-radio" class="text-md ml-2 font-medium text-gray-900"
+          >Years</label
+        >
+      </div>
+      <div class="mr-4 flex items-center">
+        <input
+          id="rating-radio"
+          type="radio"
+          value="rating"
+          v-model="group_option"
+          name="inline-radio-group"
+          class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600"
+        />
+        <label for="rating-radio" class="text-md ml-2 font-medium text-gray-900"
+          >Ratings</label
+        >
+      </div>
+    </div>
     <!-- Recommended section -->
     <div class="pb-8">
       <h1 class="text-3xl font-bold">Recommended book</h1>
@@ -49,9 +83,39 @@ const getRandomInt = (max) => Math.floor(Math.random() * max);
       <p v-else>No book match the criteria</p>
     </div>
     <!-- Years section -->
-    <div v-for="year in years">
-      <h1 class="text-3xl font-bold">{{ year }}</h1>
-      <div v-for="book in store.filterByYear(year)">
+    <div v-if="group_option == 'year'">
+      <div v-for="year in years">
+        <h1 class="text-3xl font-bold">{{ year }}</h1>
+        <div v-for="book in store.filterByYear(year)">
+          <Book
+            :book="book.data"
+            :id="book.id"
+            @delete="(isOpenModal = true), (deleteBookId = book.id)"
+          ></Book>
+          <br />
+        </div>
+      </div>
+    </div>
+    <!-- Rating section -->
+    <div v-if="group_option == 'rating'">
+      <div v-for="rating in ratings">
+        <h1 class="text-3xl font-bold">{{ rating }}</h1>
+        <div v-for="book in store.filterByRating(rating)">
+          <Book
+            :book="book.data"
+            :id="book.id"
+            @delete="(isOpenModal = true), (deleteBookId = book.id)"
+          ></Book>
+          <br />
+        </div>
+      </div>
+    </div>
+    <!-- No years section -->
+    <div class="pb-8" v-if="group_option == 'year'">
+      <h1 class="text-3xl font-bold" v-if="store.books.length != 0">
+        Books Without Year
+      </h1>
+      <div v-for="book in store.filterBookWithoutYear">
         <Book
           :book="book.data"
           :id="book.id"
@@ -60,12 +124,12 @@ const getRandomInt = (max) => Math.floor(Math.random() * max);
         <br />
       </div>
     </div>
-    <!-- No years section -->
-    <div class="pb-8">
+    <!-- No rating section-->
+    <div class="pb-8" v-if="group_option == 'rating'">
       <h1 class="text-3xl font-bold" v-if="store.books.length != 0">
-        Books Without Year
+        Books Without Rating
       </h1>
-      <div v-for="book in store.filterBookWithoutYear">
+      <div v-for="book in store.filterBookWithoutRating">
         <Book
           :book="book.data"
           :id="book.id"

@@ -6,6 +6,7 @@ export const useStore = defineStore("main", {
     return {
       books: [],
       years: [],
+      ratings: [],
       recomended: [],
     };
   },
@@ -23,11 +24,30 @@ export const useStore = defineStore("main", {
         });
       };
     },
+    filterByRating: (state) => {
+      return (rating) => {
+        let books = [...state.books];
+        books.sort(function (a, b) {
+          return a.data.name.localeCompare(b.data.name);
+        });
+        return books.filter((book) => {
+          if (book.data.rating === rating && book.data.rating != null) {
+            return book;
+          }
+        });
+      };
+    },
     filterBookWithoutYear: (state) => {
       state.books.sort((a, b) => {
         return a.data.name.localeCompare(b.data.name);
       });
       return state.books.filter((book) => book.data.pub_year == null);
+    },
+    filterBookWithoutRating: (state) => {
+      state.books.sort((a, b) => {
+        return a.data.name.localeCompare(b.data.name);
+      });
+      return state.books.filter((book) => book.data.rating == null);
     },
     getRecommendedBook: (state) => {
       let currentYear = new Date().getFullYear();

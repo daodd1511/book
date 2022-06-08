@@ -20,7 +20,10 @@ const useFirestore = () => {
           id: doc.id,
           data: doc.data(),
         });
+        // Get years
         store.years.push(doc.data().pub_year);
+        // Get ratings
+        store.ratings.push(doc.data().rating);
       });
     } catch (err) {
       console.log("Error handling document: ", error);
