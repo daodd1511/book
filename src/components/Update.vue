@@ -3,10 +3,10 @@ import useFirestore from "../composable/useFirestore";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue";
 import ISBN from "isbn3";
-
 const route = useRoute();
 const { update, getBookById } = useFirestore();
 const book = ref();
+let currentYear = new Date().getFullYear();
 onBeforeMount(async () => {
   book.value = await getBookById(route.params.id);
 });
@@ -64,6 +64,7 @@ const updateBook = async (book) => {
         id="year"
         type="number"
         min="1800"
+        :max="currentYear"
         placeholder="Publication Year"
         v-model="book.pub_year"
       /><br />

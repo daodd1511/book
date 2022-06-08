@@ -3,6 +3,7 @@ import useFirestore from "../composable/useFirestore";
 import ISBN from "isbn3";
 import { ref } from "vue";
 const { add } = useFirestore();
+let currentYear = new Date().getFullYear();
 let name = ref("");
 let author = ref("");
 let pub_year = ref(null);
@@ -74,6 +75,7 @@ const addBook = async (book) => {
         id="year"
         type="number"
         min="1800"
+        :max="currentYear"
         placeholder="Publication Year"
         v-model="book.pub_year"
       /><br />
