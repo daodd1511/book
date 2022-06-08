@@ -19,19 +19,23 @@ const checkISBN = (isbn) => {
   if (ISBN.parse(isbn) != null) {
     if (ISBN.parse(isbn).isValid) {
       alert("Your ISBN is valid");
-      return;
+      return ISBN.parse(isbn).isValid;
     } else {
       alert("Your ISBN is not valid");
-      return;
+      return ISBN.parse(isbn).isValid;
     }
   }
   alert("Your ISBN is not valid");
+  return false;
 };
 const alert = (msg) => {
   window.alert(msg);
 };
 const addBook = async (book) => {
   try {
+    if (book.isbn != "" && checkISBN(book.isbn) == false) {
+      throw "Please tpye in valid ISBN";
+    }
     await add(book);
     window.alert("Book added successfully!");
     book.name = "";
