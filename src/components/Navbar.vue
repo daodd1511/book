@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 
 <template>
   <div
-    class="absolute top-0 flex h-24 w-full items-center justify-between bg-slate-900 px-8"
+    class="fixed top-0 flex h-24 w-full items-center justify-between bg-slate-900 px-8"
   >
     <router-link to="/">
       <h1 class="text-2xl text-white">Book Catalog</h1>

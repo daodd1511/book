@@ -81,6 +81,8 @@ const addBook = async (book) => {
       <input
         id="rating"
         type="number"
+        min="0"
+        max="10"
         placeholder="Rating"
         v-model="book.rating"
       /><br />
