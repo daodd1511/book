@@ -87,5 +87,8 @@ const addBook = async (book) => {
   input {
     @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-600 focus:border-blue-500 focus:ring-blue-500;
   }
+  label {
+    @apply mb-1 block text-sm font-medium text-gray-900;
+  }
 }
 </style>
