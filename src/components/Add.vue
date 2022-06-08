@@ -1,5 +1,6 @@
 <script setup>
 import useFirestore from "../composable/useFirestore";
+import ISBN from "isbn3";
 import { ref } from "vue";
 const { add } = useFirestore();
 let name = ref("");
@@ -14,6 +15,21 @@ let book = ref({
   rating: rating.value,
   isbn: isbn.value,
 });
+const checkISBN = (isbn) => {
+  if (ISBN.parse(isbn) != null) {
+    if (ISBN.parse(isbn).isValid) {
+      alert("Your ISBN is valid");
+      return;
+    } else {
+      alert("Your ISBN is not valid");
+      return;
+    }
+  }
+  alert("Your ISBN is not valid");
+};
+const alert = (msg) => {
+  window.alert(msg);
+};
 const addBook = async (book) => {
   try {
     await add(book);
@@ -65,15 +81,22 @@ const addBook = async (book) => {
         v-model="book.rating"
       /><br />
       <label for="isbn">ISBN</label>
-      <input
-        id="isbn"
-        type="text"
-        placeholder="ISBN"
-        v-model="book.isbn"
-      /><br />
+      <div class="inline-block w-11/12">
+        <input id="isbn" type="text" placeholder="ISBN" v-model="book.isbn" />
+      </div>
+      <button
+        type="button"
+        @click="
+          book.isbn != '' ? checkISBN(book.isbn) : alert(`Please type in ISBN`)
+        "
+        class="float-right w-1/12 rounded-lg border border-yellow-700 py-2.5 text-center text-sm font-medium text-yellow-700 hover:bg-yellow-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300"
+      >
+        Check ISBN
+      </button>
+      <br />
       <button
         type="submit"
-        class="float-right rounded-lg border border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300"
+        class="float-right mt-6 rounded-lg border border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300"
       >
         Add book
       </button>
