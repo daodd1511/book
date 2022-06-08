@@ -10,4 +10,7 @@ const router = createRouter({
     { path: "/update/:id", name: "Update", component: Update },
   ],
 });
+router.beforeEach((to) => {
+  document.title = to.name;
+});
 export default router;
