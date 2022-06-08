@@ -15,48 +15,58 @@ let book = ref({
   isbn: isbn.value,
 });
 const addBook = async (book) => {
-  await add(book);
-  book.name = "";
-  book.author = "";
-  book.pub_year = null;
-  book.rating = 0;
-  book.isbn = "";
+  try {
+    await add(book);
+    window.alert("Book added successfully!");
+    book.name = "";
+    book.author = "";
+    book.pub_year = null;
+    book.rating = 0;
+    book.isbn = "";
+  } catch (error) {
+    window.alert(error);
+  }
 };
 </script>
 
 <template>
   <div>
     <form @submit.prevent="addBook(book)">
+      <label for="name">Name</label>
       <input
-        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-600 focus:border-blue-500 focus:ring-blue-500"
+        id="name"
         type="text"
         maxlength="100"
         placeholder="Name"
         v-model="book.name"
         required
       /><br />
+      <label for="author">Author</label>
       <input
-        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-600 focus:border-blue-500 focus:ring-blue-500"
+        id="author"
         type="text"
         placeholder="Author"
         v-model="book.author"
         required
       /><br />
+      <label for="year">Publication Year</label>
       <input
-        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-600 focus:border-blue-500 focus:ring-blue-500"
+        id="year"
         type="number"
         min="1800"
         placeholder="Publication Year"
         v-model="book.pub_year"
       /><br />
+      <label for="rating">Rating</label>
       <input
-        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-600 focus:border-blue-500 focus:ring-blue-500"
+        id="rating"
         type="number"
         placeholder="Rating"
         v-model="book.rating"
       /><br />
+      <label for="isbn">ISBN</label>
       <input
-        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-600 focus:border-blue-500 focus:ring-blue-500"
+        id="isbn"
         type="text"
         placeholder="ISBN"
         v-model="book.isbn"
@@ -71,4 +81,11 @@ const addBook = async (book) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@tailwind components;
+@layer components {
+  input {
+    @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-600 focus:border-blue-500 focus:ring-blue-500;
+  }
+}
+</style>

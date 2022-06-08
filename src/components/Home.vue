@@ -2,14 +2,15 @@
 import useFirestore from "../composable/useFirestore.js";
 import { useStore } from "../store/store.js";
 import Book from "../components/Book.vue";
-import { ref, onBeforeMount, watch } from "vue";
-import { useRoute } from "vue-router";
+import Modal from "../components/Modal.vue";
+import { ref, onBeforeMount } from "vue";
 const { readBook, removeBook } = useFirestore();
-const route = useRoute();
-const emit = defineEmits(["delete"]);
+const emit = defineEmits(["delete", "closeModal"]);
+const store = useStore();
 let recommendedBook = ref();
 let years = ref();
-const store = useStore();
+let isOpenModal = ref(false);
+let deleteBookId = ref();
 onBeforeMount(async () => {
   await loadBook();
 });
@@ -28,6 +29,7 @@ const deleteBook = async (id) => {
   await removeBook(id);
   store.books = [];
   store.recomended = [];
+  isOpenModal.value = false;
   await loadBook();
 };
 const getRandomInt = (max) => Math.floor(Math.random() * max);
@@ -42,7 +44,7 @@ const getRandomInt = (max) => Math.floor(Math.random() * max);
         v-if="recommendedBook"
         :book="recommendedBook.data"
         :id="recommendedBook.id"
-        @delete="deleteBook(recommendedBook.id)"
+        @delete="(isOpenModal = true), (deleteBookId = recommendedBook.id)"
       ></Book>
       <p v-else>No book match the criteria</p>
     </div>
@@ -53,7 +55,7 @@ const getRandomInt = (max) => Math.floor(Math.random() * max);
         <Book
           :book="book.data"
           :id="book.id"
-          @delete="deleteBook(book.id)"
+          @delete="(isOpenModal = true), (deleteBookId = book.id)"
         ></Book>
         <br />
       </div>
@@ -67,12 +69,28 @@ const getRandomInt = (max) => Math.floor(Math.random() * max);
         <Book
           :book="book.data"
           :id="book.id"
-          @delete="deleteBook(book.id)"
+          @delete="(isOpenModal = true), (deleteBookId = book.id)"
         ></Book>
         <br />
       </div>
     </div>
   </div>
+  <Modal v-if="isOpenModal" @closeModal="isOpenModal = false">
+    <button
+      type="button"
+      class="mr-2 inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300"
+      @click="deleteBook(deleteBookId)"
+    >
+      Yes, I'm sure
+    </button>
+    <button
+      type="button"
+      class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200"
+      @click="isOpenModal = false"
+    >
+      No, cancel
+    </button>
+  </Modal>
 </template>
 
 <style scoped></style>

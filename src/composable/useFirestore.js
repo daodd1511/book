@@ -29,7 +29,6 @@ const useFirestore = () => {
   const add = async (book) => {
     try {
       const newBook = doc(collection(db, "books"));
-      console.log(book);
       await setDoc(newBook, book);
     } catch (error) {
       console.log("Error handling document: ", error);

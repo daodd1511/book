@@ -10,7 +10,7 @@ const props = defineProps({
     <h2 class="text-xl font-bold">{{ props.book.name }}</h2>
     <div class="pl-6">
       <p>- Author: {{ props.book.author }}</p>
-      <p v-if="props.book.pub_year">- Year: {{ props.book.pub_year }}</p>
+      <!-- <p v-if="props.book.pub_year">- Year: {{ props.book.pub_year }}</p> -->
       <p v-if="props.book.rating">- Rating: {{ props.book.rating }}</p>
       <p v-if="props.book.isbn">- ISBN: {{ props.book.isbn }}</p>
     </div>
