@@ -18,7 +18,11 @@ export const useStore = defineStore("main", {
           return a.data.name.localeCompare(b.data.name);
         });
         return books.filter((book) => {
-          if (book.data.pub_year === year && book.data.pub_year != null) {
+          if (
+            book.data.pub_year === year &&
+            book.data.pub_year != null &&
+            book.data.pub_year != ""
+          ) {
             return book;
           }
         });
@@ -31,7 +35,11 @@ export const useStore = defineStore("main", {
           return a.data.name.localeCompare(b.data.name);
         });
         return books.filter((book) => {
-          if (book.data.rating === rating && book.data.rating != null) {
+          if (
+            book.data.rating === rating &&
+            book.data.rating != null &&
+            book.data.rating != ""
+          ) {
             return book;
           }
         });
@@ -41,13 +49,17 @@ export const useStore = defineStore("main", {
       state.books.sort((a, b) => {
         return a.data.name.localeCompare(b.data.name);
       });
-      return state.books.filter((book) => book.data.pub_year == null);
+      return state.books.filter(
+        (book) => book.data.pub_year == null || book.data.pub_year == ""
+      );
     },
     filterBookWithoutRating: (state) => {
       state.books.sort((a, b) => {
         return a.data.name.localeCompare(b.data.name);
       });
-      return state.books.filter((book) => book.data.rating == null);
+      return state.books.filter(
+        (book) => book.data.rating == null || book.data.rating == ""
+      );
     },
     getRecommendedBook: (state) => {
       let currentYear = new Date().getFullYear();
