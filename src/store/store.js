@@ -68,7 +68,11 @@ export const useStore = defineStore("main", {
       });
       state.recomended = state.books.filter((book) => {
         return (
-          currentYear - book.data.pub_year >= 3 && book.data.rating != null
+          currentYear - book.data.pub_year >= 3 &&
+          book.data.rating != null &&
+          book.data.rating != "" &&
+          book.data.pub_year != null &&
+          book.data.pub_year != ""
         );
       });
       return state.recomended.filter((rec) => {
